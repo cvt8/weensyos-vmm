@@ -77,7 +77,7 @@ seta20.2:       inb     $0x64, %al              # Get status
 init_pt:
         movl    $INITIAL_PT, %edi       # clear page table memory
         xorl    %eax, %eax
-        movl    $(0x3000 / 4), %ecx
+        movl    $(0x3000 >> 2), %ecx
         rep stosl
 
         # set up initial page table.
