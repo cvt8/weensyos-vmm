@@ -82,6 +82,8 @@ static void process_setup(pid_t pid, int program_number);
 
 void kernel(const char* command) {
     hardware_init();
+    log_printf("Starting WeensyOS\n");
+
     pageinfo_init();
     console_clear();
     timer_init(HZ);
