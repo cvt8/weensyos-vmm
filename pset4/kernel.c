@@ -433,6 +433,11 @@ void memshow_physical(void) {
             owner = PO_FREE;
         }
         uint16_t color = memstate_colors[owner - PO_KERNEL];
+
+	if (pn == PAGENUMBER(console)) {
+	    color = 'C' | 0x0700;
+	}
+
         // darker color for shared pages
         if (pageinfo[pn].refcount > 1) {
             color &= 0x77FF;
@@ -462,7 +467,11 @@ void memshow_virtual(x86_64_pagetable* pagetable, const char* name) {
             if (pageinfo[vam.pn].refcount == 0) {
                 owner = PO_FREE;
             }
-            color = memstate_colors[owner - PO_KERNEL];
+	    if (vam.pn == PAGENUMBER(console)) {
+		color = 'C' | 0x0700;
+	    } else {
+		color = memstate_colors[owner - PO_KERNEL];
+	    }
             // reverse video for user-accessible pages
             if (vam.perm & PTE_U) {
                 color = ((color & 0x0F00) << 4) | ((color & 0xF000) >> 4)
