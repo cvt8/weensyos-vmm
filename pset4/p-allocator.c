@@ -29,6 +29,7 @@ void process_main(void) {
                 break;
             }
             *heap_top = p;      /* check we have write access to new page */
+            console[CPOS(24, 79)] = '0' + p;  /* check we can write to console */
             heap_top += PAGESIZE;
         }
         sys_yield();
