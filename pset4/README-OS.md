@@ -46,7 +46,7 @@ You may read these if you're interested but you should be able to do
 the pset using only the code and descriptions in `kernel.c`, `lib.h`,
 and `kernel.h`.
 
-*   `bootstart.S`, `boot.c`: The bootloader.
+*   `bootentry.S`, `boot.c`: The bootloader.
 *   `k-hardware.c`: Functions that set up x86 hardware state using
     programmed I/O and memory-mapped I/O instructions.
 *   `k-exception.S`: Kernel assembly code for handling exceptions

@@ -23,7 +23,7 @@ endif
 
 # Object sets
 
-BOOT_OBJS = $(OBJDIR)/bootstart.o $(OBJDIR)/boot.o
+BOOT_OBJS = $(OBJDIR)/bootentry.o $(OBJDIR)/boot.o
 
 KERNEL_OBJS = $(OBJDIR)/k-exception.o $(OBJDIR)/kernel.o \
 	$(OBJDIR)/k-hardware.o $(OBJDIR)/k-loader.o $(OBJDIR)/lib.o
