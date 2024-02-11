@@ -147,6 +147,7 @@ int assign_physical_page(uintptr_t addr, int8_t owner) {
     } else {
         pageinfo[PAGENUMBER(addr)].refcount = 1;
         pageinfo[PAGENUMBER(addr)].owner = owner;
+	memset((void*) PAGEADDRESS(PAGENUMBER(addr)), 0, PAGESIZE);
         return 0;
     }
 }
