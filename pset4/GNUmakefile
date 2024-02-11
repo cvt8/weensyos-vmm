@@ -18,6 +18,24 @@ link = @/bin/echo " " $(2) $(patsubst %.full,%,$@) && $(LD) $(LDFLAGS) $(1)
 run = @$(if $(2),/bin/echo " " $(2) $(3) &&,) $(1) $(3)
 endif
 
+# `$(D)` controls how QEMU responds to faults. Run `make D=1 run` to
+# ask QEMU to print debugging information about interrupts and CPU resets,
+# and to quit after the first triple fault instead of rebooting.
+#
+# `$(NCPU)` controls the number of CPUs QEMU should use. It defaults to 1.
+NCPU = 1
+LOG ?= file:log.txt
+QEMUOPT = -net none -parallel $(LOG) -smp $(NCPU)
+ifeq ($(D),1)
+QEMUOPT += -d int,cpu_reset,guest_errors -no-reboot
+endif
+ifneq ($(NOGDB),1)
+QEMUGDB ?= -gdb tcp::1234
+endif
+ifeq ($(STOP),1)
+QEMUOPT += -S
+endif
+
 -include build/rules.mk
 
 
@@ -102,11 +120,11 @@ run-gdb-%: run-gdb-$(QEMUDISPLAY)-%
 	@:
 
 run-gdb-graphic-%: %.img check-qemu
-	$(call run,$(QEMU_PRELOAD) $(QEMU) $(QEMUOPT) -gdb tcp::1234 $(QEMUIMG) &,QEMU $<)
+	$(call run,$(QEMU_PRELOAD) $(QEMU) $(QEMUOPT) $(QEMUGDB) $(QEMUIMG) &,QEMU $<)
 	$(call run,sleep 0.5; gdb -x .gdbinit,GDB)
 
 run-gdb-console-%: %.img check-qemu
-	$(call run,$(QEMU_PRELOAD) $(QEMU) $(QEMUOPT) -curses -gdb tcp::1234 $(QEMUIMG),QEMU $<)
+	$(call run,$(QEMU_PRELOAD) $(QEMU) $(QEMUOPT) -display curses $(QEMUGDB) $(QEMUIMG),QEMU $<)
 
 run: run-qemu-$(basename $(IMAGE))
 run-qemu: run-qemu-$(basename $(IMAGE))
