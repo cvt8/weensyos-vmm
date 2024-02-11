@@ -31,7 +31,11 @@ void process_main(void) {
             *heap_top = p;      /* check we have write access to new page */
             console[CPOS(24, 79)] = '0' + p;  /* check we can write to console */
 	    *heap_top = *(uint8_t *)(0x80000 - 4); /* read kernel stack /!\ */
+
             heap_top += PAGESIZE;
+
+	    /* /!\ test page fault in process 2 */
+	    //if (p == 2) app_printf(p, "%d:%x\n", p, *heap_top);
         }
         sys_yield();
     }
