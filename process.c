@@ -8,7 +8,7 @@ void app_printf(int colorid, const char* format, ...) {
     if (colorid < 0) {
         color = 0x0700;
     } else {
-        static const uint8_t col[] = { 0x0E, 0x0F, 0x0C, 0x0A, 0x09 };
+        static const uint8_t col[] = { 0x0F, 0x0C, 0x0A, 0x09, 0x0E };
         color = col[colorid % sizeof(col)] << 8;
     }
 
