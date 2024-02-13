@@ -66,7 +66,7 @@ $(OBJDIR)/%.o: %.c $(BUILDSTAMPS)
 	$(call compile,-DWEENSYOS_KERNEL -c $< -o $@,COMPILE)
 
 $(OBJDIR)/boot.o: $(OBJDIR)/%.o: boot.c $(BUILDSTAMPS)
-	$(call compile,-Os -fomit-frame-pointer -c $< -o $@,COMPILE)
+	$(call compile,-Os -fomit-frame-pointer -fno-inline -c $< -o $@,COMPILE)
 
 $(OBJDIR)/%.o: %.S $(BUILDSTAMPS)
 	$(call compile,-c $< -o $@,ASSEMBLE)
