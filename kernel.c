@@ -447,7 +447,7 @@ void memshow_physical(void) {
 
         // darker color for shared pages
         if (pageinfo[pn].refcount > 1) {
-            color &= 0x77FF;
+	    color = 'S' | 0x0700;
         }
 
         console[CPOS(1 + pn / 64, 12 + pn % 64)] = color;
