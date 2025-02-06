@@ -113,6 +113,35 @@ void kernel(const char* command) {
     run(&processes[1]);
 }
 
+uintptr_t page_alloc(pageowner_t owner)
+{
+    static int pageno = 0;
+    uintptr_t pt = (uintptr_t)NULL;
+
+    for (int tries = 0; tries < PAGENUMBER(MEMSIZE_PHYSICAL); ++tries)
+    {
+	if (pageinfo[pageno].owner == PO_FREE) {
+	    pageinfo[pageno].owner = owner;
+	    pageinfo[pageno].refcount++;
+	    pt = (uintptr_t)(PAGEADDRESS(pageno));
+
+	    memset((void*) PAGEADDRESS(pageno), 0, PAGESIZE);
+
+	    log_printf("proc %d: page_alloc = %d (%p)\n",
+			current->p_pid, pageno, PAGEADDRESS(pageno));
+	    break;
+	}
+
+	pageno = (pageno + 1) % PAGENUMBER(MEMSIZE_PHYSICAL);
+    }
+
+    return pt;
+}
+
+x86_64_pagetable* pagetable_alloc(void)
+{
+    return (x86_64_pagetable*)page_alloc(current->p_pid);
+}
 
 // process_setup(pid, program_number)
 //    Load application program `program_number` as process number `pid`.

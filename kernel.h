@@ -65,6 +65,8 @@ void timer_init(int rate);
 // kernel page table (used for virtual memory)
 extern x86_64_pagetable* kernel_pagetable;
 
+extern uintptr_t page_alloc(int owner);
+
 // virtual_memory_map(pagetable, va, pa, sz, perm, allocator)
 //    Map virtual address range `[va, va+sz)` in `pagetable`.
 //    When `X >= 0 && X < sz`, the new pagetable will map virtual address
