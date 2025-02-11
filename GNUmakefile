@@ -121,7 +121,7 @@ run-gdb-%: run-gdb-$(QEMUDISPLAY)-%
 
 run-gdb-graphic-%: %.img check-qemu
 	$(call run,$(QEMU_PRELOAD) $(QEMU) $(QEMUOPT) $(QEMUGDB) $(QEMUIMG) &,QEMU $<)
-	$(call run,sleep 0.5; gdb -x .gdbinit,GDB)
+	$(call run,sleep 0.5; gdb -x weensyos.gdb,GDB)
 
 run-gdb-console-%: %.img check-qemu
 	$(call run,$(QEMU_PRELOAD) $(QEMU) $(QEMUOPT) -display curses $(QEMUGDB) $(QEMUIMG),QEMU $<)
