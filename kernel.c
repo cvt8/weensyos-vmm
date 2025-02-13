@@ -92,6 +92,10 @@ void kernel(const char* command) {
     virtual_memory_map(kernel_pagetable, (uintptr_t) 0, (uintptr_t) 0,
 		       PAGESIZE, PTE_P, NULL); // | PTE_W | PTE_U
 
+    // Add one or two similar calls to protect the kernel memory from processes running in user mode.
+    virtual_memory_map(kernel_pagetable, (uintptr_t) 0, (uintptr_t) 0,
+		       PAGESIZE, PTE_P, NULL); // | PTE_W | PTE_U
+
     // Set up process descriptors
     memset(processes, 0, sizeof(processes));
     for (pid_t i = 0; i < NPROC; i++) {
